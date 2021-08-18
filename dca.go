@@ -37,22 +37,13 @@ func logln(s ...interface{}) {
 	log.Println(s...)
 }
 
-// logln logs to assigned logger or standard logger
-func logf(format string, a ...interface{}) {
-	if Logger != nil {
-		Logger.Printf(format, a...)
-		return
-	}
-	log.Printf(format, a...)
-}
-
 var ErrNegativeFrameSize = errors.New("frame size is negative, possibly corrupted")
 
 // DecodeFrame decodes a dca frame from an io.Reader and returns the raw opus audio ready to be sent to discord
 func DecodeFrame(r io.Reader) (frame []byte, err error) {
 	var size int16
-	err = binary.Read(r, binary.LittleEndian, &size)
-	if err != nil {
+
+	if err = binary.Read(r, binary.LittleEndian, &size); err != nil {
 		return
 	}
 
