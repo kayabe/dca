@@ -19,7 +19,7 @@ type Decoder struct {
 	r *bufio.Reader
 
 	Metadata      *Metadata
-	FormatVersion int
+	FormatVersion int64
 
 	// Set to true after the first frame has been read
 	firstFrameProcessed bool
@@ -28,7 +28,8 @@ type Decoder struct {
 // NewDecoder returns a new dca decoder
 func NewDecoder(r io.Reader) *Decoder {
 	decoder := &Decoder{
-		r: bufio.NewReader(r),
+		r:        bufio.NewReader(r),
+		Metadata: &Metadata{},
 	}
 
 	return decoder
@@ -55,31 +56,25 @@ func (d *Decoder) ReadMetadata() error {
 	d.r.Discard(4)
 
 	// Read the format version
-	version, err := strconv.ParseInt(string(fingerprint[3:]), 10, 32)
-	if err != nil {
+	if d.FormatVersion, err = strconv.ParseInt(string(fingerprint[3:]), 10, 32); err != nil {
 		return err
 	}
-	d.FormatVersion = int(version)
 
 	// The length of the metadata
 	var metaLen int32
-	err = binary.Read(d.r, binary.LittleEndian, &metaLen)
-	if err != nil {
+	if err = binary.Read(d.r, binary.LittleEndian, &metaLen); err != nil {
 		return err
 	}
 
 	// Read in the metadata itself
 	jsonBuf := make([]byte, metaLen)
-	err = binary.Read(d.r, binary.LittleEndian, &jsonBuf)
-	if err != nil {
+
+	if err = binary.Read(d.r, binary.LittleEndian, &jsonBuf); err != nil {
 		return err
 	}
 
 	// And unmarshal it
-	var metadata *Metadata
-	err = json.Unmarshal(jsonBuf, &metadata)
-	d.Metadata = metadata
-	return err
+	return json.Unmarshal(jsonBuf, d.Metadata)
 }
 
 // OpusFrame returns the next audio frame
@@ -93,8 +88,7 @@ func (d *Decoder) OpusFrame() (frame []byte, err error) {
 		}
 
 		if string(magic) == "DCA" {
-			err = d.ReadMetadata()
-			if err != nil {
+			if err = d.ReadMetadata(); err != nil {
 				return nil, err
 			}
 		}

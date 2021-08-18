@@ -46,9 +46,7 @@ func logf(format string, a ...interface{}) {
 	log.Printf(format, a...)
 }
 
-var (
-	ErrNegativeFrameSize = errors.New("Frame size is negative, possibly corrupted.")
-)
+var ErrNegativeFrameSize = errors.New("frame size is negative, possibly corrupted")
 
 // DecodeFrame decodes a dca frame from an io.Reader and returns the raw opus audio ready to be sent to discord
 func DecodeFrame(r io.Reader) (frame []byte, err error) {

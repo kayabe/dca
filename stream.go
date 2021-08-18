@@ -2,15 +2,14 @@ package dca
 
 import (
 	"errors"
-	"github.com/bwmarrin/discordgo"
 	"io"
 	"sync"
 	"time"
+
+	"github.com/bwmarrin/discordgo"
 )
 
-var (
-	ErrVoiceConnClosed = errors.New("Voice connection closed")
-)
+var ErrVoiceConnClosed = errors.New("voice connection closed")
 
 // StreamingSession provides an easy way to directly transmit opus audio
 // to discord from an encode session.
@@ -53,7 +52,6 @@ func (s *StreamingSession) stream() {
 	if s.running {
 		s.Unlock()
 		panic("Stream is already running!")
-		return
 	}
 	s.running = true
 	s.Unlock()
@@ -72,8 +70,7 @@ func (s *StreamingSession) stream() {
 		}
 		s.Unlock()
 
-		err := s.readNext()
-		if err != nil {
+		if err := s.readNext(); err != nil {
 			s.Lock()
 
 			s.finished = true
@@ -159,26 +156,20 @@ func (s *StreamingSession) SetPaused(paused bool) {
 // PlaybackPosition returns the the duration of content we have transmitted so far
 func (s *StreamingSession) PlaybackPosition() time.Duration {
 	s.Lock()
-	dur := time.Duration(s.framesSent) * s.source.FrameDuration()
-	s.Unlock()
-	return dur
+	defer s.Unlock()
+	return time.Duration(s.framesSent) * s.source.FrameDuration()
 }
 
 // Finished returns wether the stream finished or not, and any error that caused it to stop
 func (s *StreamingSession) Finished() (bool, error) {
 	s.Lock()
-	err := s.err
-	fin := s.finished
-	s.Unlock()
-
-	return fin, err
+	defer s.Unlock()
+	return s.finished, s.err
 }
 
 // Paused returns wether the sream is paused or not
 func (s *StreamingSession) Paused() bool {
 	s.Lock()
-	p := s.paused
-	s.Unlock()
-
-	return p
+	defer s.Unlock()
+	return s.paused
 }
