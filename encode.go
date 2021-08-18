@@ -220,7 +220,10 @@ func (e *EncodeSession) run() {
 		"-frame_duration", strconv.Itoa(e.options.FrameDuration),
 		"-packet_loss", strconv.Itoa(e.options.PacketLoss),
 		"-threads", strconv.Itoa(e.options.Threads),
-		"-ss", strconv.Itoa(e.options.StartTime),
+	}
+
+	if e.options.StartTime > 0 {
+		args = append(args, "-ss", strconv.Itoa(e.options.StartTime))
 	}
 
 	if e.options.AudioFilter != "" {
