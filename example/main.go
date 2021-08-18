@@ -3,15 +3,15 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/bwmarrin/discordgo"
-	"github.com/jonas747/dca"
 	"io"
 	"io/ioutil"
-	//"io/ioutil"
 	"log"
 	"os/exec"
 	"runtime"
 	"time"
+
+	"github.com/bwmarrin/discordgo"
+	"github.com/kayabe/dca"
 )
 
 var (

@@ -3,10 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/jonas747/dca"
 	"io"
 	"os"
 	"time"
+
+	"github.com/kayabe/dca"
 )
 
 // All global variables used within the program
@@ -143,7 +144,7 @@ func main() {
 	}
 
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Failed creating an encoding session: ", err)
+		fmt.Fprintf(os.Stderr, "Failed creating an encoding session: %s", err)
 		os.Exit(1)
 	}
 

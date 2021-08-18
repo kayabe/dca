@@ -45,10 +45,10 @@ sudo add-apt-repository ppa:kirillshkrogalev/ffmpeg-next
 sudo apt-get update
 sudo apt-get install ffmpeg --yes
 # install dca
-go get github.com/jonas747/dca/cmd/dca
+go get github.com/kayabe/dca/cmd/dca
 ```
 
-Note: If Go complains that GOPATH is not defined, try run `source ~/.bashrc` and then `go get github.com/jonas747/dca/cmd/dca`.
+Note: If Go complains that GOPATH is not defined, try run `source ~/.bashrc` and then `go get github.com/kayabe/dca/cmd/dca`.
 
 ### Windows
 
@@ -56,7 +56,7 @@ Note: If Go complains that GOPATH is not defined, try run `source ~/.bashrc` and
 Install Go for Windows
 Install ffmpeg
 Setup gopath to some empty folder (for example, I made mine C:\gopath)
-go get github.com/jonas747/dca/cmd/dca
+go get github.com/kayabe/dca/cmd/dca
 dca should now be built in %GOPATH%/bin
 ```
 
@@ -69,7 +69,7 @@ This way uses Homebrew, download it from [here.](http://brew.sh/)
 ```
 $ brew install ffmpeg --with-opus
 $ brew install golang
-$ go get github.com/jonas747/dca/cmd/dca
+$ go get github.com/kayabe/dca/cmd/dca
 ```
 
 

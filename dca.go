@@ -17,7 +17,7 @@ const (
 	LibraryVersion string = "0.0.5"
 
 	// The URL to the GitHub repository of DCA
-	GitHubRepositoryURL string = "https://github.com/jonas747/dca"
+	GitHubRepositoryURL string = "https://github.com/kayabe/dca"
 )
 
 type OpusReader interface {
