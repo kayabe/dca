@@ -1,4 +1,5 @@
-dca [![Go report](http://goreportcard.com/badge/kayabe/dca)](http://goreportcard.com/report/kayabe/dca) [![Build Status](https://travis-ci.org/kayabe/dca.svg?branch=master)](https://travis-ci.org/kayabe/dca)
+dca [![GoDoc](https://godoc.org/github.com/kayabe/dca?status.svg)](https://godoc.org/github.com/kayabe/dca)
+![Status](https://github.com/kayabe/dca/workflows/Go/badge.svg)
 ====
 `dca` is a audio file format that uses opus packets and json metadata.
 
