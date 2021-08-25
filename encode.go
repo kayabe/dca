@@ -185,9 +185,14 @@ func (e *EncodeSession) run() {
 	e.Lock()
 	e.running = true
 
+	regularFile := false
 	inFile := "pipe:0"
+
 	if e.filePath != "" {
 		inFile = e.filePath
+		if info, err := os.Stat(inFile); err == nil && info.Mode().IsRegular() {
+			regularFile = true
+		}
 	}
 
 	if e.options == nil {
@@ -202,10 +207,6 @@ func (e *EncodeSession) run() {
 	// Launch ffmpeg with a variety of different fruits and goodies mixed togheter
 	args := []string{
 		"-stats",
-		"-reconnect", "1",
-		"-reconnect_at_eof", "1",
-		"-reconnect_streamed", "1",
-		"-reconnect_delay_max", "2",
 		"-i", inFile,
 		"-map", "0:a",
 		"-acodec", "libopus",
@@ -220,6 +221,15 @@ func (e *EncodeSession) run() {
 		"-frame_duration", strconv.Itoa(e.options.FrameDuration),
 		"-packet_loss", strconv.Itoa(e.options.PacketLoss),
 		"-threads", strconv.Itoa(e.options.Threads),
+	}
+
+	if regularFile {
+		args = append([]string{
+			"-reconnect", "1",
+			"-reconnect_at_eof", "1",
+			"-reconnect_streamed", "1",
+			"-reconnect_delay_max", "2",
+		}, args...)
 	}
 
 	if e.options.StartTime > 0 {
