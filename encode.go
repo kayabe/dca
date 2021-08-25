@@ -223,7 +223,7 @@ func (e *EncodeSession) run() {
 		"-threads", strconv.Itoa(e.options.Threads),
 	}
 
-	if regularFile {
+	if !regularFile {
 		args = append([]string{
 			"-reconnect", "1",
 			"-reconnect_at_eof", "1",
